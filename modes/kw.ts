@@ -45,11 +45,20 @@ export class ModeOfOperationKW {
         const encryptedB = this.aes.encrypt(B)
 
         A = encryptedB.subarray(0, 8)
-        // XOR del byte menos significativo de t con el primer byte de A
-        const tByteView = new DataView(new ArrayBuffer(8))
-        tByteView.setBigUint64(0, BigInt(t), false) // Big-endian
-        for (let k = 0; k < 8; k++) {
-          A[k] ^= tByteView.getUint8(k)
+
+        // Se aplica un XOR a los 64 bits de 'A' con el contador 't' de 64 bits.
+        // Convertimos 't' a big-endian byte por byte y lo aplicamos con XOR.
+        let temp_t = t
+        for (let k = 7; k >= 0; k--) {
+          // Extraemos el byte menos significativo de temp_t y lo aplicamos a A[k]
+          A[k] ^= temp_t & 0xff
+          // Desplazamos temp_t 8 bits a la derecha. Usamos división para
+          // evitar problemas con números mayores a 32 bits.
+          temp_t = Math.floor(temp_t / 256)
+          // Optimización: si no quedan bits en 't', podemos detenernos.
+          if (temp_t === 0) {
+            break
+          }
         }
 
         R[i] = encryptedB.subarray(8)
@@ -89,12 +98,19 @@ export class ModeOfOperationKW {
     for (let j = 5; j >= 0; j--) {
       for (let i = n; i >= 1; i--) {
         const t = n * j + i
-        const tByteView = new DataView(new ArrayBuffer(8))
-        tByteView.setBigUint64(0, BigInt(t), false) // Big-endian
 
+        // Creamos una copia de A para no modificar el bloque original antes de tiempo.
         const tempA = new Uint8Array(A)
-        for (let k = 0; k < 8; k++) {
-          tempA[k] ^= tByteView.getUint8(k)
+
+        // Se aplica un XOR a los 64 bits de 'A' con el contador 't' de 64 bits.
+        // Convertimos 't' a big-endian byte por byte y lo aplicamos con XOR.
+        let temp_t = t
+        for (let k = 7; k >= 0; k--) {
+          tempA[k] ^= temp_t & 0xff
+          temp_t = Math.floor(temp_t / 256)
+          if (temp_t === 0) {
+            break
+          }
         }
 
         const B = new Uint8Array(16)
