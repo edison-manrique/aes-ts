@@ -1,0 +1,35 @@
+{
+  "name": "aes-benchmark",
+  "version": "1.0.0",
+  "description": "Benchmark suite for AES modes of operation",
+  "main": "index.ts",
+  "scripts": {
+    "benchmark": "bun run index.ts",
+    "benchmark:ecb": "bun run ecb.benchmark.ts",
+    "benchmark:cbc": "bun run cbc.benchmark.ts",
+    "benchmark:ctr": "bun run ctr.benchmark.ts",
+    "benchmark:cfb": "bun run cfb.benchmark.ts",
+    "benchmark:ofb": "bun run ofb.benchmark.ts",
+    "benchmark:gcm": "bun run gcm.benchmark.ts",
+    "benchmark:ccm": "bun run ccm.benchmark.ts",
+    "benchmark:eax": "bun run eax.benchmark.ts",
+    "benchmark:cwc": "bun run cwc.benchmark.ts",
+    "benchmark:gcm-siv": "bun run gcm-siv.benchmark.ts",
+    "benchmark:ocb": "bun run ocb.benchmark.ts",
+    "benchmark:xts": "bun run xts.benchmark.ts",
+    "benchmark:kw": "bun run kw.benchmark.ts",
+    "benchmark:kwp": "bun run kwp.benchmark.ts",
+    "benchmark:fpe-ff1": "bun run fpe-ff1.benchmark.ts",
+    "benchmark:hybrid-ctr": "bun run hybrid-ctr.benchmark.ts",
+    "benchmark:cbc-mac": "bun run cbc-mac.benchmark.ts",
+    "benchmark:pmac-siv": "bun run pmac-siv.benchmark.ts"
+  },
+  "keywords": [
+    "aes",
+    "benchmark",
+    "crypto",
+    "encryption"
+  ],
+  "author": "AES TypeScript Library",
+  "license": "MIT"
+}
