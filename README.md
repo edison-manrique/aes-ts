@@ -249,10 +249,6 @@ class ModeOfOperationX {
 }
 ```
 
-## Licencia
-
-Esta biblioteca está licenciada bajo la licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
 ---
 
 Desarrollado con ❤️ para proporcionar una implementación completa y bien documentada de AES en TypeScript.
