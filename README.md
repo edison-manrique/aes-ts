@@ -210,10 +210,10 @@ console.log(decryptedCC); // "1234567890123456"
 
 La biblioteca incluye varios archivos de ejemplo:
 
-- [example.ts](example.ts) - Ejemplo básico de uso
-- [comprehensive-examples.ts](comprehensive-examples.ts) - Ejemplos detallados de todos los modos
-- [fpe-examples.ts](fpe-examples.ts) - Ejemplos de cifrado de formato preservado
-- [test-high-level.ts](test-high-level.ts) - Pruebas de la API de alto nivel
+- [example.ts](./examples/example.ts) - Ejemplo básico de uso
+- [comprehensive-examples.ts](./examples/comprehensive-examples.ts) - Ejemplos detallados de todos los modos
+- [fpe-examples.ts](./examples/fpe-examples.ts) - Ejemplos de cifrado de formato preservado
+- [test-high-level.ts](./examples/test-high-level.ts) - Pruebas de la API de alto nivel
 
 Para ejecutar los ejemplos:
 
