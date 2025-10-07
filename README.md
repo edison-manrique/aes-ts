@@ -219,10 +219,10 @@ Para ejecutar los ejemplos:
 
 ```bash
 # Ejecutar ejemplo básico
-npx ts-node example.ts
+bun run example.ts
 
 # Ejecutar ejemplos completos
-npx ts-node comprehensive-examples.ts
+bun run comprehensive-examples.ts
 ```
 
 ## API
@@ -247,25 +247,6 @@ class ModeOfOperationX {
   encrypt(plaintext: Uint8Array, ...params): Uint8Array | { ciphertext: Uint8Array, tag: Uint8Array };
   decrypt(ciphertext: Uint8Array, ...params): Uint8Array | Uint8Array | null;
 }
-```
-
-## Testing
-
-La biblioteca incluye pruebas unitarias para todos los modos de operación:
-
-```bash
-# Ejecutar pruebas
-cd modes/_test
-npx ts-node t.ecb.ts
-npx ts-node t.cbc.ts
-# ... ejecutar otras pruebas según sea necesario
-```
-
-También puedes ejecutar pruebas específicas:
-
-```bash
-# Ejecutar prueba del modo híbrido
-npx ts-node modes/_test/t.hybrid-ctr.ts
 ```
 
 ## Contribuciones
