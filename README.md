@@ -249,14 +249,6 @@ class ModeOfOperationX {
 }
 ```
 
-## Contribuciones
-
-1. Haz un fork del repositorio
-2. Crea una rama para tu característica (`git checkout -b feature/NuevaCaracteristica`)
-3. Realiza tus cambios y haz commit (`git commit -am 'Agrega nueva característica'`)
-4. Haz push a la rama (`git push origin feature/NuevaCaracteristica`)
-5. Crea un nuevo Pull Request
-
 ## Licencia
 
 Esta biblioteca está licenciada bajo la licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
