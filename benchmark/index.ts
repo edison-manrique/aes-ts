@@ -22,6 +22,7 @@ const modes = [
   'fpe-ff1',
   'hybrid-ctr',
   'cbc-mac',
+  'cmac',
   'pmac-siv'
 ];
 

@@ -19,8 +19,9 @@ Una implementación completa de los modos de operación AES en TypeScript. Esta 
 - ✅ Implementación completa de AES (128/192/256 bits)
 - ✅ Todos los modos de operación estándar (ECB, CBC, CFB, OFB, CTR)
 - ✅ Modos autenticados (GCM, CCM, EAX, OCB, CWC)
-- ✅ Modos especializados (XTS para almacenamiento en bloque, FPE-FF1 para cifrado de formato preservado)
+- ✅ Modos de autenticación (CBC-MAC, CMAC)
 - ✅ Modos resistentes al mal uso de nonce (GCM-SIV, PMAC-SIV)
+- ✅ Modos especializados (XTS para almacenamiento en bloque, FPE-FF1 para cifrado de formato preservado)
 - ✅ Funciones de envoltura de claves (KW, KWP, TKW)
 - ✅ Implementación pura en TypeScript sin dependencias externas
 - ✅ Documentación completa en español
@@ -65,6 +66,13 @@ import { ModeOfOperationECB } from './aes-ts/modes/ecb';
 | [EAX](modes/eax.ts) | Encrypt-and-Authenticate | Resiliente, nonce reutilizable | Comunicaciones seguras |
 | [OCB](modes/ocb.ts) | Offset Codebook | Eficiente, patentes | Aplicaciones no patentadas |
 | [CWC](modes/cwc.ts) | Carter-Wegman+Counter | Seguro, paralelizable | Cifrado autenticado |
+
+### Modos de Autenticación
+
+| Modo | Descripción | Características | Uso Típico |
+|------|-------------|-----------------|------------|
+| [CBC-MAC](modes/cbc-mac.ts) | Cipher Block Chaining MAC | Solo autenticación | Mensajes de longitud fija |
+| [CMAC](modes/cmac.ts) | Cipher-based MAC | Solo autenticación, longitud variable | Mensajes de cualquier longitud |
 
 ### Modos Resistentes al Mal Uso de Nonce
 
@@ -138,6 +146,23 @@ if (decrypted !== null) {
 } else {
   console.log("Autenticación fallida");
 }
+```
+
+### Generación de Código de Autenticación (MAC)
+
+```typescript
+import { ModeOfOperationCMAC } from './aes-ts/modes/cmac';
+
+const key = new Uint8Array(32);
+crypto.getRandomValues(key);
+
+const message = new TextEncoder().encode("Mensaje a autenticar");
+const cmac = new ModeOfOperationCMAC(key);
+const tag = cmac.generateTag(message);
+
+// Para verificar
+const isValid = cmac.verifyTag(message, tag);
+console.log("Etiqueta válida:", isValid);
 ```
 
 ## Uso Avanzado

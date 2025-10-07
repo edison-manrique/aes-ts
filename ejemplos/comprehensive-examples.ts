@@ -658,6 +658,65 @@ function exampleHybridCTR() {
   console.log()
 }
 
+// Example 20: CMAC Mode
+function exampleCMAC() {
+  console.log("=== CMAC (Cipher-based Message Authentication Code) Mode ===")
+  
+  const key = createTestKey(32) // 256-bit key
+  const aes = new HighLevelAES(AesMode.CMAC, key)
+  
+  const plaintext = createTestData(35) // Any length (CMAC handles variable lengths well)
+  console.log("Plaintext:", toHexString(plaintext))
+  
+  try {
+    const result = aes.encrypt(plaintext)
+    console.log("MAC Tag:", toHexString(result.tag!))
+    
+    // Test verification with correct data
+    const isValid = aes.encrypt(plaintext).tag?.every((value, index) => value === result.tag![index])
+    console.log("Verification with correct data:", isValid ? "PASSED" : "FAILED")
+    
+    // Test verification with tampered data
+    const tamperedPlaintext = new Uint8Array(plaintext)
+    tamperedPlaintext[0] ^= 1 // Flip one bit
+    const isTamperedValid = aes.encrypt(tamperedPlaintext).tag?.every((value, index) => value === result.tag![index])
+    console.log("Verification with tampered data:", isTamperedValid ? "PASSED (UNEXPECTED)" : "FAILED (EXPECTED)")
+    
+    // Verify that CMAC doesn't support decryption
+    try {
+      aes.decrypt(plaintext, { tag: result.tag })
+      console.log("Unexpected: CMAC should not support decryption")
+    } catch (error) {
+      console.log("Expected error:", (error as Error).message)
+    }
+  } catch (error) {
+    console.error("CMAC Error:", error)
+  }
+  
+  console.log()
+  
+  // Test with different message sizes
+  console.log("--- Testing with different message sizes ---")
+  const emptyMessage = new Uint8Array(0)
+  const singleBlock = createTestData(16)
+  const multiBlock = createTestData(48)
+  
+  try {
+    const emptyResult = aes.encrypt(emptyMessage)
+    console.log("Empty message MAC:", toHexString(emptyResult.tag!))
+    
+    const singleBlockResult = aes.encrypt(singleBlock)
+    console.log("Single block MAC:", toHexString(singleBlockResult.tag!))
+    
+    const multiBlockResult = aes.encrypt(multiBlock)
+    console.log("Multi block MAC:", toHexString(multiBlockResult.tag!))
+  } catch (error) {
+    console.error("CMAC Size Testing Error:", error)
+  }
+  
+  console.log()
+}
+
 // Run all examples
 function runAllExamples() {
   console.log("Starting comprehensive AES mode examples...\n")
@@ -681,6 +740,7 @@ function runAllExamples() {
   examplePMAC_SIV()
   exampleTKW()
   exampleHybridCTR()
+  exampleCMAC()
   
   console.log("All examples completed!")
 }

@@ -17,6 +17,7 @@ import { ModeOfOperationFPE_FF1 } from "./modes/fpe-ff1"
 import { ModeOfOperationCBC_MAC } from "./modes/cbc-mac"
 import { ModeOfOperationPMAC_SIV } from "./modes/pmac-siv"
 import { ModeOfOperationTKW } from "./modes/tkw"
+import { ModeOfOperationCMAC } from "./modes/cmac"
 
 import { ModeOfOperationHybridCTR } from "./modes/hybrid-ctr"
 
@@ -40,6 +41,7 @@ export enum AesMode {
   KWP = "kwp",
   FPE_FF1 = "fpe-ff1",
   CBC_MAC = "cbc-mac",
+  CMAC = "cmac",
   PMAC_SIV = "pmac-siv",
   TKW = "tkw",
   HYBRID_CTR = "hybrid-ctr"
@@ -183,6 +185,9 @@ export class HighLevelAES {
       case AesMode.CBC_MAC:
         return this.generateCBC_MAC(plaintext, this.tagSize)
       
+      case AesMode.CMAC:
+        return this.generateCMAC(plaintext, this.tagSize)
+      
       case AesMode.PMAC_SIV:
         return this.encryptPMAC_SIV(plaintext, options?.nonce || options?.iv, options?.aad)
       
@@ -287,6 +292,9 @@ export class HighLevelAES {
       
       case AesMode.CBC_MAC:
         throw new Error("CBC-MAC is a MAC-only mode and does not support decryption")
+      
+      case AesMode.CMAC:
+        throw new Error("CMAC is a MAC-only mode and does not support decryption")
       
       case AesMode.PMAC_SIV:
         if (!options?.tag) {
@@ -690,6 +698,17 @@ export class HighLevelAES {
     const cbcMac = new ModeOfOperationCBC_MAC(this.key)
     const tag = cbcMac.generateTag(plaintext, tagSize || 16)
     return { ciphertext: new Uint8Array(0), tag }
+  }
+
+  private generateCMAC(plaintext: Uint8Array, tagSize?: number): EncryptionResult {
+    const cmac = new ModeOfOperationCMAC(this.key)
+    const tag = cmac.generateTag(plaintext, tagSize || 16)
+    return { ciphertext: new Uint8Array(0), tag }
+  }
+
+  private verifyCMAC(plaintext: Uint8Array, tag: Uint8Array): boolean {
+    const cmac = new ModeOfOperationCMAC(this.key)
+    return cmac.verifyTag(plaintext, tag)
   }
 
   private encryptPMAC_SIV(plaintext: Uint8Array, nonce?: Uint8Array, aad?: Uint8Array): EncryptionResult {
